@@ -8,8 +8,13 @@ import json
 
 class HomeawaySpider(scrapy.Spider):
     name = 'homeaway'
-    allowed_domains = ['homeaway.com']
-    start_urls = ['http://homeaway.com/']
+
+    # allowed_domains = ['fewo-direkt.de']
+    # start_urls = ['https://fewo-direkt.de/']
+
+    allowed_domains = ['fewo-direkt.de']
+    start_urls = ['https://www.fewo-direkt.de/']
+
     post_data = '''
     {{
         "operationName":"SearchQuery",
@@ -46,7 +51,7 @@ class HomeawaySpider(scrapy.Spider):
         self.keywords = keywords
         self.post_data = HomeawaySpider.post_data.format(page = 1, keyword = 'luxembourg')
         self.json_post_data = json.loads(self.post_data)
-        self.url = ('https://www.homeaway.com/serp/g')
+        self.url = ('https://www.fewo-direkt.de/serp/g')
 
     def start_requests(self):
                 
@@ -55,7 +60,7 @@ class HomeawaySpider(scrapy.Spider):
         yield JSONRequest(url=self.url, callback=self.parse, data=self.json_post_data)
 
     def parse(self, response):
-        url = ('https://www.homeaway.com/serp/g')
+        url = ('https://www.fewo-direkt.de/serp/g')
         data = json.loads(response.body)
 
         # Debugging response
