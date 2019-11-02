@@ -9,9 +9,6 @@ import json
 class HomeawaySpider(scrapy.Spider):
     name = 'homeaway'
 
-    # allowed_domains = ['fewo-direkt.de']
-    # start_urls = ['https://fewo-direkt.de/']
-
     allowed_domains = ['fewo-direkt.de']
     start_urls = ['https://www.fewo-direkt.de/']
 
@@ -49,7 +46,7 @@ class HomeawaySpider(scrapy.Spider):
     def __init__(self, keywords='', *args,**kwargs):
         super(HomeawaySpider, self).__init__(*args, **kwargs)
         self.keywords = keywords
-        self.post_data = HomeawaySpider.post_data.format(page = 1, keyword = 'luxembourg')
+        self.post_data = HomeawaySpider.post_data.format(page = 1, keyword = 'luxemburg')
         self.json_post_data = json.loads(self.post_data)
         self.url = ('https://www.fewo-direkt.de/serp/g')
 
@@ -65,10 +62,10 @@ class HomeawaySpider(scrapy.Spider):
 
         # Debugging response
         ## Write response to file
-        """ filename = 'ha-debug.json'
+        filename = 'ha-debug.json'
         with open(filename, 'wb') as f:
             f.write(response.body)
-        self.log('Saved file %s' % filename) """
+        self.log('Saved file %s' % filename)
 
         # Return a list of all homes
         homes = data.get('data').get('results').get('listings')
@@ -79,16 +76,57 @@ class HomeawaySpider(scrapy.Spider):
             raise CloseSpider("No homes available")
 
         for home in homes:
+            listing['propertyId'] = home.get('propertyId')
             listing['listingId'] = home.get('listingId')
+            listing['detailPageUrl'] = 'https://www.fewo-direkt.de' + home.get('detailPageUrl')
             listing['propertyType'] = home.get('propertyType')
+            listing['headline'] = home.get('propertyMetadata').get('headline')
+
+            try:
+                listing['currencyUnits'] = home.get('averagePrice').get('currencyUnits')
+            except:
+                listing['currencyUnits'] = 'N/A'
+            
+            try:
+                listing['periodType'] = home.get('averagePrice').get('periodType')
+            except:
+                listing['periodType'] = 'N/A'
+
+            try:  
+                listing['priceValue'] = home.get('averagePrice').get('value')
+            except:
+                listing['priceValue'] = 0
+
+            try:
+                listing['formattedAmount'] = home.get('priceSummary').get('formattedAmount')
+            except:
+                listing['formattedAmount'] = 0
+
+            listing['averageRating'] = home.get('averageRating')
+            listing['reviewCount'] = home.get('reviewCount')
+
+            listing['bedLinenProvided'] = 0
+            listing['parkingAvailable'] = 0
+
+            amenities = home.get('amenitiesBadges')
+            for amenity in amenities:
+                print (amenity.get('id'))
+                if amenity.get('id') == '22':
+                    listing['bedLinenProvided'] = 1
+                if amenity.get('id') == '20':
+                    listing['parkingAvailable'] = 1
+
+            listing['latitude'] = home.get('geoCode').get('latitude')
+            listing['longitude'] = home.get('geoCode').get('longitude')             
+
             yield listing
 
         page = data.get('data').get('results').get('page')
         pageCount = data.get('data').get('results').get('pageCount')
 
-        post_data = HomeawaySpider.post_data.format(page = page + 1, keyword = 'luxembourg')
+        post_data = HomeawaySpider.post_data.format(page = page + 1, keyword = 'luxemburg')
         json_post_data = json.loads(post_data)
-        if page <= pageCount:
+        if page < pageCount:
             yield JSONRequest(url=url, callback=self.parse, data=json_post_data)
             print ("page = ", page)
             print ("PageCount = ", pageCount)

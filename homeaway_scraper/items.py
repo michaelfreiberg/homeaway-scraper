@@ -13,5 +13,18 @@ class HomeawayScraperItem(scrapy.Item):
     # name = scrapy.Field()
 
     # Room fields
+    propertyId = scrapy.Field()
     listingId = scrapy.Field()
+    detailPageUrl = scrapy.Field()
     propertyType = scrapy.Field()
+    currencyUnits = scrapy.Field()
+    priceValue = scrapy.Field()
+    periodType = scrapy.Field()
+    formattedAmount = scrapy.Field()
+    bedLinenProvided = scrapy.Field()
+    parkingAvailable = scrapy.Field()
+    averageRating = scrapy.Field()
+    reviewCount = scrapy.Field()
+    latitude = scrapy.Field()
+    longitude = scrapy.Field()
+    headline = scrapy.Field()
