@@ -93,16 +93,20 @@ class HomeawaySpider(scrapy.Spider):
                 listing['periodType'] = 'N/A'
 
             try:  
-                listing['priceValue'] = home.get('averagePrice').get('value')
+                listing['priceValue'] = "{:5.2f}".format(home.get('averagePrice').get('value')).replace(".",",")
+                
             except:
-                listing['priceValue'] = 0
+                listing['priceValue'] = ""
 
             try:
-                listing['formattedAmount'] = home.get('priceSummary').get('formattedAmount')
+                listing['formattedAmount'] = "{:5.2f}".format(float((home.get('priceSummary').get('formattedAmount')).replace("€",""))).replace(".",",")
             except:
-                listing['formattedAmount'] = 0
-
-            listing['averageRating'] = home.get('averageRating')
+                listing['formattedAmount'] = ""
+            try:
+                listing['averageRating'] = "{:5.2f}".format(home.get('averageRating')).replace(".",",")
+            except:
+                listing['averageRating'] = ""
+            
             listing['reviewCount'] = home.get('reviewCount')
 
             listing['bedLinenProvided'] = 0
