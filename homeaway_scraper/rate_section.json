@@ -1,0 +1,61 @@
+"rateSections": [
+    {
+        "endDate": null,
+        "minStay": 3,
+        "rateInfos": [
+            {
+                "details": "85 €",
+                "subtitle": null,
+                "title": "pro Nacht"
+            },
+            {
+                "details": "373 €",
+                "subtitle": null,
+                "title": "pro Woche"
+            }
+        ],
+        "rateNotes": [],
+        "startDate": null,
+        "subtitle": null,
+        "title": null
+    },
+    {
+        "endDate": null,
+        "minStay": 0,
+        "rateInfos": [
+            {
+                "details": "3 €",
+                "subtitle": null,
+                "title": "paiement en ligne"
+            },
+            {
+                "details": "50 €",
+                "subtitle": null,
+                "title": "nettoyage final"
+            }
+        ],
+        "rateNotes": null,
+        "startDate": null,
+        "subtitle": null,
+        "title": "Zusätzliche Kosten"
+    }
+],
+"unitRentalPolicy": null
+},
+"rateSummary": {
+"accurateRate": true,
+"beginDate": "2019-09-30",
+"currency": "EUR",
+"travelerCurrency": "EUR",
+"endDate": "2021-09-28",
+"flatFees": [
+    {
+        "type": "CLEANING_FEE",
+        "appliesPer": "STAY",
+        "description": "Reinigungsgebühr",
+        "minAmount": 50,
+        "maxAmount": 50,
+        "minAmountConverted": 50,
+        "maxAmountConverted": 50
+    }
+]
